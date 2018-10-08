@@ -1,0 +1,29 @@
+{
+    "eslint.options": {
+        "configFile": ".eslintrc.js"
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        {
+            "language": "html",
+            "autoFix": true
+        },
+        {
+            "language": "vue",
+            "autoFix": true
+        }
+    ],
+
+    "prettier.eslintIntegration": true,
+    "eslint.packageManager": "yarn",
+    "eslint.autoFixOnSave": true,
+    "vetur.format.defaultFormatter.js": "vscode-typescript",
+    "emmet.includeLanguages": {
+        "vue-html": "html",
+        "vue": "html"
+    },
+    // 启用后，按下 TAB 键，将展开 Emmet 缩写。
+    "emmet.triggerExpansionOnTab": true,
+    "vetur.format.defaultFormatter.html": "prettyhtml"
+}
