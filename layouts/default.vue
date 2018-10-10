@@ -66,6 +66,8 @@
         </template>
       </v-list>
     </v-navigation-drawer>
+
+    <!-- 工具栏 -->
     <v-toolbar :clipped-left="clipped" fixed app>
       <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-btn icon @click.stop="miniVariant = !miniVariant">
@@ -74,11 +76,14 @@
       <v-btn icon @click.stop="clipped = !clipped">
         <v-icon>web</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
       <v-toolbar-title v-text="title"/>
+      <v-spacer></v-spacer>
+      <userInfo flat/>
+      <v-btn icon>
+        <v-icon>more_vert</v-icon>
+      </v-btn>
     </v-toolbar>
+
     <v-content>
       <v-container>
         <nuxt/>
@@ -91,19 +96,28 @@
 </template>
 
 <script>
+import userInfo from "~/components/UserInfo"
+
 export default {
+  components: {
+    userInfo
+  },
   data() {
     return {
       clipped: false,
       drawer: true,
       fixed: false,
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: '大港胶管 库存管理',
       items: [
         { icon: 'apps', title: 'Welcome', to: '/' },
         { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' },
         {
           icon: 'library_books',
           title: '库存总账',
-          to: '/account/total/2016'
+          to: '/account/total'
         }, {
           icon: "people",
           title: '客户信息',
@@ -139,11 +153,7 @@ export default {
         { icon: 'help', text: 'Help' },
         { icon: 'phonelink', text: 'App downloads' },
         { icon: 'keyboard', text: 'Go to the old version' }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: '大港胶管 库存管理'
+      ]
     }
   },
   metthods:{

@@ -1,9 +1,9 @@
-export default function({ $axios, redirect }) {
+export default function({ $axios, redirect,store}) {
 	$axios.onRequest(config => {
 		console.log('Making request to ' + config.url)
 		// 下面会说在什么时候存储 token
-		if (localStorage.token) {
-			config.headers.Authorization = 'JWT ' + localStorage.token
+		if (store.getters.isAuthenticated) {
+			config.headers.Authorization = 'JWT ' + store.getters.token
 		}
 		return config
 	})
@@ -17,7 +17,7 @@ export default function({ $axios, redirect }) {
 		if (code === 401) {
 			// 401 说明 token 验证失败
 			// 可以直接跳转到登录页面，重新登录获取 token
-			location.href = '#/login'
+			location.href = '#/user/login'
 		}
 	})
 }

@@ -21,13 +21,6 @@
 	<v-card>
 		<v-card-title primary-title>客户信息
 			<v-spacer></v-spacer>
-			<v-select
-				label="账套年份"
-				v-model="year"
-				:items="years"
-				@change="fetchData"
-			></v-select>
-			<v-spacer/>
 			<v-text-field
 				v-model="options.searchKey"
 				append-icon="search"
@@ -43,7 +36,7 @@
 			:pagination.sync="options"
 			:total-items="options.total"
 			:loading="loading"
-			no-data-text = "没有数据 :("
+			no-data-text="没有数据 :("
 			hide-actions
 		>
 			<v-progress-linear slot="progress" color="blue" indeterminate/>
@@ -71,8 +64,6 @@ import api from '@/api/customerApi'
 export default {
 	data() {
 		return {
-			years: [2016, 2017],
-			year: 2016,
 			options: api.pageOptions,
 			loading: false,
 			headers: [
@@ -85,9 +76,20 @@ export default {
 			data: []
 		}
 	},
+	computed: {
+		accYear(){
+			return this.$store.getters.accYear
+		}
+	},
 	mounted() {
 		console.log('on customer.vue mounted')
 		this.fetchData()
+	},
+	notifications: {
+		showWarnMsg: {
+			title: '提示信息',
+			type: 'warn'
+		}
 	},
 	methods: {
 		handlePageChange(val) {
@@ -96,7 +98,7 @@ export default {
 		},
 		fetchData: function () {
 			this.loading = true
-			api.getCustomers(this.year, this.options)
+			api.getCustomers(this.accYear, this.options)
 				.then(res => {
 					let data = res.data
 					this.data = data.values
@@ -105,9 +107,8 @@ export default {
 				})
 				.catch(err => {
 					this.loading = false
-					this.$Notice.warning({
-						title: '提示',
-						desc: `数据加载失败,${err.message}`
+					this.showWarnMsg({
+						message: `数据加载失败,${err.message}`
 					})
 				})
 		}

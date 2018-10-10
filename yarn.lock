@@ -3772,6 +3772,10 @@ mini-css-extract-plugin@^0.4.3:
     schema-utils "^1.0.0"
     webpack-sources "^1.1.0"
 
+mini-toastr@^0.8.1:
+  version "0.8.1"
+  resolved "http://registry.npm.taobao.org/mini-toastr/download/mini-toastr-0.8.1.tgz#8b8632210a0266ece061f69920522e76996facfa"
+
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/minimalistic-assert/download/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
@@ -6276,6 +6280,10 @@ vue-meta@^1.5.5:
 vue-no-ssr@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/vue-no-ssr/download/vue-no-ssr-1.0.0.tgz#169bdabfa2ca170c8979d94062d877a0479c3f10"
+
+vue-notifications@^0.9.0:
+  version "0.9.0"
+  resolved "http://registry.npm.taobao.org/vue-notifications/download/vue-notifications-0.9.0.tgz#7d25e19a5e4872442e3527f252007d538af4ba6e"
 
 vue-router@^3.0.1:
   version "3.0.1"

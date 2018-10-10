@@ -2,6 +2,10 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import colors from 'vuetify/es5/util/colors'
 
+import AlertComponent from '~/components/Alert.vue'
+
+Vue.component('app-alert', AlertComponent)
+
 Vue.use(Vuetify, {
 	theme: {
 		primary: '#121212', // a color that is not in the material colors palette

@@ -8,7 +8,7 @@ module.exports = {
 	},
 
 	router: {
-		middleware: 'check-auth'
+		middleware: 'authenticated'
 	},
 	/*
     ** Headers of the page
@@ -50,7 +50,8 @@ module.exports = {
 	/*
     ** Plugins to load before mounting the App
     */
-	plugins: ['@/plugins/vuetify', '@/plugins/axios'],
+	plugins: ['@/plugins/vuetify', '@/plugins/axios',{
+		src:'@/plugins/notifications',ssr:false}],
 
 	/*
     ** Nuxt.js modules

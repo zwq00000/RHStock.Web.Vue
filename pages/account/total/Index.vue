@@ -1,20 +1,46 @@
+<!-- 年度库存总账 -->
 <template>
-  <div>
-    <!-- <Form inline :label-width="80">
-            <FormItem label="选择仓库:">
-                <WhCodeSelector v-model="whCode" />
-            </FormItem>
-            <FormItem label="选择月份">
-                <DatePicker v-model="accMonth" type="month" placeholder="选择月份"></DatePicker>
-            </FormItem>
-            <FormItem>
-                <Button type="success" icon="el-icon-refresh" v-on:click="fetchData()">刷新</Button>
-            </FormItem>
-        </Form>
-        <Table :loading="loading" :columns="columns" :data="data"></Table>
-        <Page @on-change="handleCurrentChange" :current-page="page.page" :page-size="page.pageSize" :total="page.total"></Page>
-        -->
-  </div>
+	<v-card>
+		<v-card-title primary-title>客户信息
+			<v-spacer></v-spacer>
+			<WhCodeSelector v-model="whCode" :year="year" @change="fetchData"/>
+			<v-spacer/>
+			<v-text-field
+				v-model="options.searchKey"
+				append-icon="search"
+				label="Search"
+				clearable
+				@input="fetchData"
+			></v-text-field>
+		</v-card-title>
+		<v-data-table
+			:headers="header"
+			:items="data"
+			:pagination.sync="options"
+			:total-items="options.total"
+			:loading="loading"
+			hide-actions
+		>
+			<v-progress-linear slot="progress" color="blue" indeterminate/>
+			<template slot="items" slot-scope="props">
+				<td>{{ props.item.whCode }}</td>
+				<td class="text-xs-right">{{ props.item.invCode }}</td>
+				<td class="text-xs-right">{{ props.item.summary }}</td>
+				<td class="text-xs-right">{{ props.item.beginQuantity }}</td>
+				<td class="text-xs-right">{{ props.item.incomeQuantity }}</td>
+				<td class="text-xs-right">{{ props.item.sentOutQuantity }}</td>
+				<td class="text-xs-right">{{ props.item.balanceQuantity }}</td>
+			</template>
+		</v-data-table>
+		<div class="text-xs-center pt-2">
+			<v-pagination
+				v-model="options.page"
+				:length="options.pages"
+				:total-visible="7"
+				@input="handlePageChange"
+			></v-pagination>
+		</div>
+	</v-card>
 </template>
 
 <script>
@@ -27,68 +53,95 @@ export default {
 		WhCodeSelector
 	},
 	props: {
-		//账套年度
+		// 账套年度
 		year: { type: Number, require: true, default: 2016 }
 	},
 	data() {
 		return {
 			whCode: 'ZCK',
-			accMonth: '',
-			page: api.pageOptions, //{ page: 1, pageSize: 20 },
+			options: api.pageOptions, //{ page: 1, pageSize: 20 },
 			loading: true,
-			columns: [
-				{ key: 'whCode', title: '仓库代码' },
-				{ key: 'invCode', title: '存货代码' },
-				{ key: 'summary', title: '说明' },
-				{ key: 'beginQuantity', title: '期初数量' },
-				{ key: 'incomeQuantity', title: '入库数量' },
-				{ key: 'sentOutQuantity', title: '出库数量' },
-				{ key: 'balanceQuantity', title: '结存数量' }
+			header: [
+				{ text: '仓库代码', value: 'whCode' },
+				{ text: '存货代码', value: 'invCode' },
+				{ text: '品名', value: 'summary' },
+				{ text: '期初数量', value: 'beginQuantity' },
+				{ text: '入库数量', value: 'incomeQuantity' },
+				{ text: '出库数量', value: 'sentOutQuantity' },
+				{ text: '结存数量', value: 'balanceQuantity' }
 			],
 			data: []
 		}
 	},
 	computed: {
-		month() {
-			if (!this.accMonth) {
-				return 1
-			}
-			return this.accMonth.getMonth()
+		accYear() {
+			return this.$store.getters.accYear
+		},
+		exportCsvLink() {
+			return api.getExportCsvLink(this.whCode, this.year)
 		}
 	},
-	created() {
-		this.accMonth = new Date(this.year, 1, 1)
+	watch: {
+		whCode() {
+			this.fetchData()
+		}
+	},
+	mounted() {
+		console.log('on fullyear.vue mounted')
 		this.fetchData()
 	},
+	notifications: {
+		showWarnMsg: {
+			title: '提示信息',
+			type: 'warn'
+		}
+	},
 	methods: {
-		handleCurrentChange(val) {
+		handlePageChange(val) {
 			console.log(`当前页: ${val}`)
-			this.page.page = val
+			this.options.page = val
 			this.fetchData()
 		},
-
+		handleDrpodown(item) {
+			if (item === 'createAccount') {
+				this.createFullYearAccount()
+			}
+		},
+		/**
+		 * 创建全年库存总账
+		 */
+		createFullYearAccount() {
+			this.loading = true
+			api.createFullYear(this.whCode, this.year).then(res => {
+				this.fetchData()
+				this.loading = false
+			})
+		},
+		/**
+		 * 导出数据
+		 */
+		exportData() {
+			this.$refs.table.exportCsv({
+				filename: `${this.whCode}${this.accYear} 年度库存总账`,
+				original: false
+			})
+		},
 		/**
 		 * 加载 工件 数据
 		 */
-		fetchData: function() {
+		fetchData: function () {
 			this.loading = true
-			api.getTotalAccounts(
-				this.whCode,
-				this.year,
-				this.accMonth.getMonth() + 1,
-				this.page
-			)
+			api.getFullYear(this.whCode, this.accYear, this.options)
 				.then(res => {
 					let data = res.data
 					this.data = data.values
-					this.page = data.page
+					this.options.mergeResult(data.page)
 					this.loading = false
 				})
 				.catch(err => {
 					this.loading = false
-					this.$Notice.warning({
-						title: '提示',
-						desc: `数据加载失败,${err.message}`
+					this.$showWarnMsg({
+						message: `数据加载失败,${err.message}`
 					})
 				})
 		}

@@ -1,4 +1,4 @@
-import fetch from './fetch'
+//import fetch from './fetch'
 
 /**
  * 用户登录
@@ -7,7 +7,7 @@ import fetch from './fetch'
  * @param {workDate} date
  */
 const login = (username, password) => {
-  return fetch.post('/account/login', { username, password })
+  return $nuxt.$axios.post('/auth/login', { username, password })
 }
 
 /**
@@ -15,14 +15,14 @@ const login = (username, password) => {
  * @param {string} token
  */
 const getInfo = token => {
-  return fetch.get('/account/info', { token })
+  return $nuxt.$axios.get('/auth/info', { token })
 }
 
 /**
  * 注销
  */
 const logout = () => {
-  return fetch.post('/account/logout')
+  return $nuxt.$axios.post('/auth/logout')
 }
 
 export default {
