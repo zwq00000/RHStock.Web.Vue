@@ -39,8 +39,7 @@
                                 </v-layout>
                                 <v-layout>
                                     <v-flex xs12>
-                                       <!-- <v-select label="账套年份" name="year" v-model="accYear" :items="years"></v-select>-->
-                                       <accYearSelect />
+                                      <accYearSelect />
                                     </v-flex>
                                 </v-layout>
                                 <v-layout>
@@ -71,6 +70,10 @@ export default {
             userName: '',
             password: ''
         }
+    },
+    async fetch({$axios,store}){
+       let {data} = await $axios.get('/api/accsuit/years')
+       store.commit('setAccYears',data.years)
     },
     computed: {
         user() {

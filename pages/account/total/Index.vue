@@ -45,7 +45,7 @@
 
 <script>
 //import { Table,Button,Dialog } from "element-ui";
-import WhCodeSelector from '~/components/WhCodeSelector'
+import WhCodeSelector from '~/components/whCodeSelector'
 import api from '~/api/TotalAccountApi'
 
 export default {

@@ -122,6 +122,10 @@ export default {
           icon: "people",
           title: '客户信息',
           to: '/customer'
+        },{
+          icon:'peoples',
+          title:'用户',
+          to: '/user/index'
         }
       ],
       groupItems: [

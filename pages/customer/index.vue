@@ -1,23 +1,4 @@
 <template>
-	<!-- <div>
-      <Form inline :label-width="80">
-                    <FormItem label="账套年度:">
-                        <Select v-model="year" @on-change="fetchData" filterable>
-                            <Option value="2016">2016 年</Option>
-                            <Option value="2017">2017 年</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem>
-                         <Input v-model="options.searchKey" placeholder="查找关键词">
-                            <Button slot="append" icon="ios-search" v-on:click="fetchData()"></Button>
-                        </Input>
-                    </FormItem>
-            </Form>
-        <Table :loading="loading" :columns="columns" :data="data" ref="table"></Table>
-        <Page @on-change="handlePageChange" :current-page="options.page" :page-size="options.pageSize" :total="options.total"/>
-    </div>
-	-->
-	<!-- eslint-disable-next-line vue/max-attributes-per-line -->
 	<v-card>
 		<v-card-title primary-title>客户信息
 			<v-spacer></v-spacer>

@@ -38,7 +38,7 @@ export default {
         },
         firstChar() {
             if(this.$store.getters.user){
-                return this.$store.getters.user[0].toUpperCase()
+                return this.$store.getters.userName[0].toUpperCase()
             }else{
                 return ''
             }
