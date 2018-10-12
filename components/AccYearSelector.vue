@@ -10,20 +10,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            accYear: this.$store.getters.accYear
+            accYear: this.$store.getters['accsuit/accYear']
         }
     },
     computed: {
-        years() {
-            return this.$store.getters.accYears
-        }
+        ...mapGetters({
+            'years':'accsuit/accYears'
+        })
     },
     methods: {
         onYearChanged() {
-            this.$store.commit('setAccYear', this.accYear)
+            this.$store.commit('accsuit/setAccYear', this.accYear)
         }
     }
 }

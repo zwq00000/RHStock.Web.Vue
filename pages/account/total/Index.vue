@@ -44,7 +44,7 @@
 </template>
 
 <script>
-//import { Table,Button,Dialog } from "element-ui";
+import { mapGetters } from 'vuex'
 import WhCodeSelector from '~/components/whCodeSelector'
 import api from '~/api/TotalAccountApi'
 
@@ -74,12 +74,13 @@ export default {
 		}
 	},
 	computed: {
-		accYear() {
-			return this.$store.getters.accYear
-		},
+
 		exportCsvLink() {
 			return api.getExportCsvLink(this.whCode, this.year)
-		}
+		},
+		...mapGetters({
+			accYear: 'accsuit/accYear'
+		})
 	},
 	watch: {
 		whCode() {

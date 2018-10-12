@@ -4,7 +4,7 @@ import pages from './pages'
 
 const getCustomers = function(year, options) {
 	let path = `/api/customer/${year}`
-	return fetch.get(path, { params: pages.toPageParams(options) })
+	return fetch.get(path, pages.toParams(options))
 }
 
 export default {

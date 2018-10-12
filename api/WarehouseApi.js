@@ -4,7 +4,8 @@
  */
 
 'use strict'
-import fetch from './fetch.js'
+import pages from './pages'
+import fetch from './fetch'
 
 /**
  * GetWarehouses 获取仓库信息
@@ -13,14 +14,10 @@ import fetch from './fetch.js'
  * @param {Number}  page @description 当前页码
  * @returns axios.get Promission
  */
-const GetWarehouses = function(year, searchStr, pageSize, page) {
+const GetWarehouses = function(year, options) {
 	let path = `/api/Warehouse/${year}`
 	let params = {}
-	params['searchStr'] = searchStr
-	params['pageSize'] = pageSize
-	params['page'] = page
-
-	return fetch.get(path, { params })
+	return fetch.get(path, pages.toParams(options))
 }
 
 /**

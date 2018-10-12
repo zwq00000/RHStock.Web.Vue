@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
     data() {
         return {
@@ -32,18 +34,10 @@ export default {
         }
     },
 
-    computed: {
-        user() {
-            return this.$store.getters.user
-        },
-        firstChar() {
-            if(this.$store.getters.user){
-                return this.$store.getters.userName[0].toUpperCase()
-            }else{
-                return ''
-            }
-        }
-    },
+    computed:mapGetters({
+        user:'user/user',
+        firstChar:'user/nameLabel'
+    }),
     methods:{
         onClick(val){
             this.$store.dispatch('logout')

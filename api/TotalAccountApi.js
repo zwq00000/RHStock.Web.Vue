@@ -18,7 +18,7 @@ GET: api/TotalAccount
 */
 const getTotalAccounts = function(whCode, year, month, options) {
 	let path = `/api/TotalAccount/${whCode}/${year}/${month}`
-	return fetch.get(path, { params: options })
+	return fetch.get(path, pages.toParams(options))
 }
 
 /**
@@ -27,7 +27,7 @@ const getTotalAccounts = function(whCode, year, month, options) {
  */
 const getFullYear = function(whCode, year, options) {
 	let path = `/api/YearTotalAccount/${whCode}/${year}`
-	return fetch.get(path, { params: pages.toPageParams(options) })
+	return fetch.get(path, pages.toParams(options) )
 }
 
 /**

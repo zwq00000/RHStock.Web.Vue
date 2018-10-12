@@ -3,7 +3,7 @@
 		<v-card-title primary-title>客户信息
 			<v-spacer></v-spacer>
 			<v-text-field
-				v-model="options.searchKey"
+				v-model="pagination.searchKey"
 				append-icon="search"
 				label="查找..."
 				clearable
@@ -14,8 +14,8 @@
 			:headers="headers"
 			:items="data"
 			item-key="cusCode"
-			:pagination.sync="options"
-			:total-items="options.total"
+			:pagination.sync="pagination"
+			:total-items="pagination.totalItems"
 			:loading="loading"
 			no-data-text="没有数据 :("
 			hide-actions
@@ -31,8 +31,8 @@
 		</v-data-table>
 		<div class="text-xs-center pt-2">
 			<v-pagination
-				v-model="options.page"
-				:length="options.pages"
+				v-model="pagination.page"
+				:length="pagination.pages"
 				:total-visible="7"
 				@input="handlePageChange"
 			></v-pagination>
@@ -40,12 +40,14 @@
 	</v-card>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import pages from '@/api/pages'
 import api from '@/api/customerApi'
 
 export default {
 	data() {
 		return {
-			options: api.pageOptions,
+			pagination: {},
 			loading: false,
 			headers: [
 				{ value: 'cusCode', text: '客户代码' },
@@ -57,11 +59,9 @@ export default {
 			data: []
 		}
 	},
-	computed: {
-		accYear(){
-			return this.$store.getters.accYear
-		}
-	},
+	computed: mapGetters({
+		accYear: 'accsuit/accYear'
+	}),
 	mounted() {
 		console.log('on customer.vue mounted')
 		this.fetchData()
@@ -74,16 +74,17 @@ export default {
 	},
 	methods: {
 		handlePageChange(val) {
-			this.options.page = val
+			this.pagination.page = val
 			this.fetchData()
 		},
 		fetchData: function () {
 			this.loading = true
-			api.getCustomers(this.accYear, this.options)
+			api.getCustomers(this.accYear, this.pagination)
 				.then(res => {
 					let data = res.data
 					this.data = data.values
-					this.options.mergeResult(data.page)
+					//this.sort.rowsPerPage = data.page.pageSize
+					pages.mergePageination(this.pagination,data.page)
 					this.loading = false
 				})
 				.catch(err => {

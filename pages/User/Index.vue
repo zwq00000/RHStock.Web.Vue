@@ -3,7 +3,7 @@
         <v-card-title primary-title>用户列表
             <v-spacer></v-spacer>
             <v-text-field
-                v-model="options.searchKey"
+                v-model="pagination.searchKey"
                 append-icon="search"
                 label="查找..."
                 clearable
@@ -14,9 +14,10 @@
             :headers="headers"
             :items="data"
             item-key="uid"
-            :pagination.sync="options"
-            :total-items="options.total"
+            :pagination.sync="pagination"
+            :total-items="pagination.totalItems"
             :loading="loading"
+            :search="pagination.searchKey"
             no-data-text="没有数据 :("
             hide-actions
         >
@@ -29,12 +30,7 @@
             </template>
         </v-data-table>
         <div class="text-xs-center pt-2">
-            <v-pagination
-                v-model="options.page"
-                :length="options.pages"
-                :total-visible="7"
-                @input="handlePageChange"
-            ></v-pagination>
+            <v-pagination v-model="pagination.page" :length="pagination.pages" :total-visible="7"></v-pagination>
         </div>
     </v-card>
 </template>
@@ -45,7 +41,7 @@ import api from '~/api/pages'
 export default {
     data() {
         return {
-            options: api.pageOptions,
+            pagination: {},
             loading: false,
             headers: [
                 { value: 'userName', text: '用户名' },
@@ -57,27 +53,32 @@ export default {
         }
     },
 
-    asyncData({ $axios,options }) {
+    asyncData({ $axios, options }) {
         return $axios.get(`/api/users`)
             .then(res => {
                 let data = res.data
-                //this.data = data.values
-                return { data: data.values, options: data.page }
+                return { data: data.values ,pagination:api.toPagination(data.page)}
             })
     },
-
-    mounted() {
-        //fetch()
+    watch: {
+        pagination: function (oldval, newval) {
+            if (newval.sortBy === oldval.sortBy && newval.descending === oldval.descending) {
+                this.fetchData()
+            }
+        }
     },
-
     methods: {
+        handlePageChange(val) {
+            this.options.page = val
+            this.fetchData()
+        },
         fetchData: function () {
-            this.$axios.get(`/api/users`, { params: api.toPageParams(this.options) })
-            .then(res => {
-                let data = res.data
-                this.data = data.values
-                this.options.mergePageResult(data.page)
-            })
+            this.$axios.get(`/api/users`, api.toParams(this.pagination))
+                .then(res => {
+                    let data = res.data
+                    this.data = data.values
+                    api.mergePageination(this.pagination,data.page);
+                })
         }
     }
 }

@@ -13,44 +13,66 @@ const pageOptions = {
 	// 查询关键字
 	searchKey: '',
 	// 排序字段
-	sort: '',
-	// 排序方式
-	orderBy: '',
+	sortBy: '',
+	//是否 逆序 排序
+	descending: null,
 
 	mergeResult: function(result) {
-		mergePageResult(this, result)
+		mergeResult(this, result)
 	},
 	toParams: function() {
-		return toPageParams(this)
+		return toParams(this)
 	}
 }
-
 
 /**
  * 合并查询结果
  * @param {*} pageOptions
  * @param {pageResult} result
  */
-const mergePageResult = function(pageOptions, result) {
-	pageOptions.page = result.page || 1
-	pageOptions.pageSize = result.pageSize
-	pageOptions.pages = result.pages || 0
-	pageOptions.total = result.total
+const mergeResult = function(options, result) {
+	options.page = result.page || 1
+	options.pageSize = result.pageSize
+	options.pages = result.pages || 0
+	options.total = result.total
 }
 
-const toPageParams = function(options) {
+const mergePageination = function(pagination,result){
+	pagination.page = result.page
+	pagination.rowsPerPage = result.pageSize
+	pagination.totalItems = result.total
+	pagination.pages = result.pages
+}
+
+const toPagination = function(result){
+	return {
+		page : result.page,
+		rowsPerPage : result.pageSize,
+		totalItems : result.total,
+		pages : result.pages
+	}
+}
+
+const toParams = function(options) {
 	if (options) {
 		return {
-			page: options.page || 1,
-			pageSize: options.pageSize || 20,
-			searchKey: options.searchKey
+			params: {
+				page: options.page || 1,
+				pageSize: options.pageSize || 20,
+				searchKey: options.searchKey,
+				sortBy: options.sortBy,
+				descending: options.descending
+			}
 		}
 	} else {
-		return pageOptions
+		return { params: pageOptions }
 	}
 }
 
 export default {
 	pageOptions,
-	toPageParams
+	toParams,
+	mergeResult,
+	toPagination,
+	mergePageination
 }

@@ -39,7 +39,7 @@
                                 </v-layout>
                                 <v-layout>
                                     <v-flex xs12>
-                                      <accYearSelect />
+                                        <accYearSelect/>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout>
@@ -47,7 +47,6 @@
                                         <v-btn type="submit" :loading="loading">Login</v-btn>
                                     </v-flex>
                                 </v-layout>
-                                
                             </form>
                         </v-container>
                     </v-card-text>
@@ -58,12 +57,14 @@
 </template>
 
 <script>
+import { mapState ,mapActions} from 'vuex'
 import accYearSelect from '~/components/AccYearSelector'
+
 export default {
     middleware: 'anonymous',
     components: {
-		accYearSelect
-	},
+        accYearSelect
+    },
     layout: 'empty',
     data() {
         return {
@@ -71,31 +72,30 @@ export default {
             password: ''
         }
     },
-    async fetch({$axios,store}){
-       let {data} = await $axios.get('/api/accsuit/years')
-       store.commit('setAccYears',data.years)
+    async fetch({ $axios, store }) {
+        //获取账套年度列表
+        let { data } = await $axios.get('/api/accsuit/years')
+        store.commit('accsuit/setAccYears', data.years)
     },
-    computed: {
-        user() {
-            return this.$store.getters.user
-        },
-        error() {
-            return this.$store.getters.error
-        },
-        loading() {
-            return this.$store.getters.loading
-        }
-    },
+    computed: mapState({
+        token: state => state.user.token,
+        error: 'error',
+        loading: 'loading'
+    }),
     watch: {
-        user(value) {
+        token(value) {
             if (value !== null && value !== undefined) {
                 this.$router.push('/')
             }
         }
     },
     methods: {
+        ...mapActions({
+            'login':'user/signUserIn'
+        }),
         onSignin() {
-            this.$store.dispatch('signUserIn', { userName: this.userName, password: this.password })
+            //this.$store.dispatch('signUserIn', { userName: this.userName, password: this.password })
+            this.login({ userName: this.userName, password: this.password })
         },
         onDismissed() {
             this.$store.dispatch('clearError')
