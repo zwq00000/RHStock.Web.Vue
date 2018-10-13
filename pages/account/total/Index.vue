@@ -6,18 +6,17 @@
 			<WhCodeSelector v-model="whCode" :year="year" @change="fetchData"/>
 			<v-spacer/>
 			<v-text-field
-				v-model="options.searchKey"
+				v-model="pagination.searchKey"
 				append-icon="search"
 				label="Search"
 				clearable
-				@input="fetchData"
+				@change="fetchData"
 			></v-text-field>
 		</v-card-title>
 		<v-data-table
 			:headers="header"
 			:items="data"
-			:pagination.sync="options"
-			:total-items="options.total"
+			:pagination="pagination"
 			:loading="loading"
 			hide-actions
 		>
@@ -34,8 +33,8 @@
 		</v-data-table>
 		<div class="text-xs-center pt-2">
 			<v-pagination
-				v-model="options.page"
-				:length="options.pages"
+				v-model="pagination.page"
+				:length="pagination.pages"
 				:total-visible="7"
 				@input="handlePageChange"
 			></v-pagination>
@@ -59,7 +58,7 @@ export default {
 	data() {
 		return {
 			whCode: 'ZCK',
-			options: api.pageOptions, //{ page: 1, pageSize: 20 },
+			pagination: {},//api.pageOptions, //{ page: 1, pageSize: 20 },
 			loading: true,
 			header: [
 				{ text: '仓库代码', value: 'whCode' },
@@ -100,7 +99,7 @@ export default {
 	methods: {
 		handlePageChange(val) {
 			console.log(`当前页: ${val}`)
-			this.options.page = val
+			this.pagination.page = val
 			this.fetchData()
 		},
 		handleDrpodown(item) {
@@ -132,16 +131,16 @@ export default {
 		 */
 		fetchData: function () {
 			this.loading = true
-			api.getFullYear(this.whCode, this.accYear, this.options)
+			api.getFullYear(this.whCode, this.accYear, this.pagination)
 				.then(res => {
 					let data = res.data
 					this.data = data.values
-					this.options.mergeResult(data.page)
+					api.mergePageination(this.pagination,data.page)
 					this.loading = false
 				})
 				.catch(err => {
 					this.loading = false
-					this.$showWarnMsg({
+					this.showWarnMsg({
 						message: `数据加载失败,${err.message}`
 					})
 				})

@@ -75,6 +75,7 @@ const getExportCsvLink = function(whCode, year) {
 
 export default {
 	pageOptions:pages.pageOptions,
+	mergePageination:pages.mergePageination,
 	getTotalAccounts,
 	buildTotalAccount,
 	clearTotalAccounts,

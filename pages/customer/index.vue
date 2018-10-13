@@ -7,15 +7,18 @@
 				append-icon="search"
 				label="查找..."
 				clearable
-				@input="fetchData"
+				@change="fetchData"
 			></v-text-field>
 		</v-card-title>
+		<!--
+			:pagination.sync="pagination"
+			:total-items="pagination.totalItems"
+		 -->
 		<v-data-table
 			:headers="headers"
 			:items="data"
 			item-key="cusCode"
-			:pagination.sync="pagination"
-			:total-items="pagination.totalItems"
+			:pagination="pagination"
 			:loading="loading"
 			no-data-text="没有数据 :("
 			hide-actions

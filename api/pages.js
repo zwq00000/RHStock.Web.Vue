@@ -15,14 +15,7 @@ const pageOptions = {
 	// 排序字段
 	sortBy: '',
 	//是否 逆序 排序
-	descending: null,
-
-	mergeResult: function(result) {
-		mergeResult(this, result)
-	},
-	toParams: function() {
-		return toParams(this)
-	}
+	descending: null
 }
 
 /**

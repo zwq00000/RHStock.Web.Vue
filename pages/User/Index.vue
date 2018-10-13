@@ -7,7 +7,7 @@
                 append-icon="search"
                 label="查找..."
                 clearable
-                @input="fetchData"
+                @change="fetchData"
             ></v-text-field>
         </v-card-title>
         <v-data-table
