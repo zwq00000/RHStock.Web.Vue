@@ -1,12 +1,6 @@
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center>
-    <v-flex
-      xs12
-      sm8
-      md6>
+  <v-layout column justify-center align-center>
+    <v-flex xs12 sm8 md6>
       <div class="text-xs-center">
         <logo/>
         <vuetify-logo/>
@@ -45,21 +39,13 @@
             </em>
           </div>
           <hr class="my-3">
-          <a 
-            href="https://nuxtjs.org/" 
-            target="_blank">Nuxt Documentation</a>
+          <a href="https://nuxtjs.org/" target="_blank">Nuxt Documentation</a>
           <br>
-          <a 
-            href="https://github.com/nuxt/nuxt.js" 
-            target="_blank">Nuxt GitHub</a>
+          <a href="https://github.com/nuxt/nuxt.js" target="_blank">Nuxt GitHub</a>
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
-          <v-btn 
-            color="primary" 
-            flat 
-            nuxt 
-            to="/inspire">Continue</v-btn>
+          <v-btn color="primary" flat nuxt to="/inspire">Continue</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -71,9 +57,9 @@ import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
 export default {
-	components: {
-		Logo,
-		VuetifyLogo
-	}
+  components: {
+    Logo,
+    VuetifyLogo
+  }
 }
 </script>

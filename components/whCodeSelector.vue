@@ -1,16 +1,33 @@
 <template>
-	<v-combobox
-		v-model="whCode"
-		:items="whCodes"
-		item-value="whCode"
-		item-text="whName"
-		:label="label"
-		filterable
-		@change="handleChange"
-	></v-combobox>
+	<div>
+		<!--<v-combobox v-model="whCode" :items="whCodes" item-value="whCode" item-text="whName" :label="label" filterable @change="handleChange">
+			</v-combobox> -->
+		<v-autocomplete
+			v-model="whCode"
+			:items="whCodes"
+			box
+			:label="label"
+			item-text="whName"
+			item-value="whCode"
+			@change="handleChange"
+		>
+			<template slot="item" slot-scope="data">
+				<template>
+					<v-list-tile-content>
+						<v-list-tile-title>{{data.item.whName}}</v-list-tile-title>
+					</v-list-tile-content>
+					<v-list-tile-action>
+						<v-list-tile-action-text>{{data.item.whCode}}</v-list-tile-action-text>
+					</v-list-tile-action>
+				</template>
+			</template>
+		</v-autocomplete>
+		<div></div>
+	</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import api from '@/api/WarehouseApi'
 export default {
 	props: {
@@ -18,11 +35,6 @@ export default {
 			type: String,
 			required: true,
 			default: ''
-		},
-		// 账套年度
-		year: {
-			type: Number,
-			required: true
 		},
 		label: { type: String, default: '选择仓库' }
 	},
@@ -33,6 +45,10 @@ export default {
 			whCodes: []
 		}
 	},
+	computed: mapGetters({
+		accYear: 'accsuit/accYear',
+		depCode: 'user/depCode'
+	}),
 	created: function () {
 		this.fetchData()
 	},
@@ -44,7 +60,7 @@ export default {
 		},
 		fetchData() {
 			this.loading = true
-			api.GetWhCodes(this.year)
+			api.GetWhCodes(this.accYear, this.depCode)
 				.then(res => {
 					let data = res.data
 					this.whCodes = data
@@ -52,15 +68,12 @@ export default {
 				})
 				.catch(err => {
 					this.loading = false
-					this.$Notice.warning({
-						title: '数据加载异常',
-						desc: `数据加载失败,${err.message}`
-					})
+					this.commit('error',`数据加载失败,${err.message}`)
 				})
 		},
 		handleChange(value) {
-			this.$emit('input', value.whCode)
-			this.$emit('change', value.whCode)
+			this.$emit('input', value)
+			this.$emit('change', value)
 		}
 	}
 }

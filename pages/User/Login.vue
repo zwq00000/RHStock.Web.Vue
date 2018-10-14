@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapState ,mapActions} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import accYearSelect from '~/components/AccYearSelector'
 
 export default {
@@ -85,16 +85,19 @@ export default {
     watch: {
         token(value) {
             if (value !== null && value !== undefined) {
-                this.$router.push('/')
+                if (this.$router.options.routes.length > 0) {
+                    this.$router.go(-1)
+                } else {
+                    this.$router.push('/')
+                }
             }
         }
     },
     methods: {
         ...mapActions({
-            'login':'user/signUserIn'
+            'login': 'user/signUserIn'
         }),
         onSignin() {
-            //this.$store.dispatch('signUserIn', { userName: this.userName, password: this.password })
             this.login({ userName: this.userName, password: this.password })
         },
         onDismissed() {

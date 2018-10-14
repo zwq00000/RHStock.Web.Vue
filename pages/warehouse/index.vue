@@ -1,16 +1,9 @@
 <template>
 	<v-card>
 		<v-card-title primary-title>仓库信息
-			<v-spacer></v-spacer>
-			<v-select
-				label="账套年份"
-				v-model="year"
-				:items="years"
-				@change="fetchData"
-			></v-select>
 			<v-spacer/>
 			<v-text-field
-				v-model="options.searchKey"
+				v-model="pagination.searchKey"
 				append-icon="search"
 				label="Search"
 				clearable
@@ -20,27 +13,23 @@
 		<v-data-table
 			:headers="headers"
 			:items="data"
-			item-key="cusCode"
-			:pagination.sync="options"
-			:total-items="options.total"
+			item-key="whCode"
+			:pagination="pagination"
 			:loading="loading"
-			:search="search"
 			no-data-text = "没有数据 :("
 			hide-actions
 		>
 			<v-progress-linear slot="progress" color="blue" indeterminate/>
 			<template slot="items" slot-scope="props">
-				<td>{{ props.item.cusCode }}</td>
-				<td>{{ props.item.cusName }}</td>
-				<td>{{ props.item.summary }}</td>
-				<td>{{ props.item.abbName }}</td>
-				<td>{{ props.item.address }}</td>
+				<td>{{ props.item.depName }}</td>
+				<td>{{ props.item.whCode }}</td>
+				<td>{{ props.item.whName }}</td>
 			</template>
 		</v-data-table>
 		<div class="text-xs-center pt-2">
 			<v-pagination
-				v-model="options.page"
-				:length="options.pages"
+				v-model="pagination.page"
+				:length="pagination.pages"
 				:total-visible="7"
 				@input="handlePageChange"
 			></v-pagination>
@@ -48,48 +37,58 @@
 	</v-card>
 </template>
 <script>
-import api from '@/api/customerApi'
+import { mapGetters } from 'vuex'
+import pages from '@/api/pages'
+import api from '@/api/WarehouseApi'
 
 export default {
 	data() {
 		return {
-			years: [2016, 2017],
-			year: 2016,
-			options: api.pageOptions,
-			loading: false,
+			pagination: {},
+            loading: false,
 			headers: [
-				{ value: 'cusCode', text: '客户代码' },
-				{ value: 'cusName', text: '客户名称' },
-				{ value: 'summary', text: '摘要' },
-				{ value: 'abbName', text: '简称' },
-				{ value: 'address', text: '地址' }
+				{ value: 'depName', text: '部门' },
+				{ value: 'whCode', text: '仓库代码' },
+				{ value: 'whName', text: '仓库名称' }
 			],
-			data: []
+			data: [{
+      "whCode": "string",
+      "whName": "string",
+      "depCode": "string",
+      "depName": "string"
+    }]
 		}
 	},
+	computed: mapGetters({
+		accYear: 'accsuit/accYear'
+	}),
 	mounted() {
-		console.log('on customer.vue mounted')
 		this.fetchData()
+	},
+	notifications: {
+		showWarnMsg: {
+			title: '提示信息',
+			type: 'warn'
+		}
 	},
 	methods: {
 		handlePageChange(val) {
-			this.options.page = val
+			this.pagination.page = val
 			this.fetchData()
 		},
 		fetchData: function () {
 			this.loading = true
-			api.getCustomers(this.year, this.options)
+			api.GetWarehouses(this.accYear, this.pagination)
 				.then(res => {
 					let data = res.data
 					this.data = data.values
-					this.options.mergeResult(data.page)
+					pages.mergePageination(this.pagination,data.page)
 					this.loading = false
 				})
 				.catch(err => {
 					this.loading = false
-					this.$Notice.warning({
-						title: '提示',
-						desc: `数据加载失败,${err.message}`
+					this.showWarnMsg({
+						message: `数据加载失败,${err.message}`
 					})
 				})
 		}

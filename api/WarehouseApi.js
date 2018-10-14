@@ -16,7 +16,6 @@ import fetch from './fetch'
  */
 const GetWarehouses = function(year, options) {
 	let path = `/api/Warehouse/${year}`
-	let params = {}
 	return fetch.get(path, pages.toParams(options))
 }
 
@@ -27,8 +26,6 @@ const GetWarehouses = function(year, options) {
  */
 const GetWarehouse = function(year, whCode) {
 	let path = `/api/Warehouse/${year}/${whCode}`
-	let params = {}
-
 	return fetch.get(path, { params })
 }
 

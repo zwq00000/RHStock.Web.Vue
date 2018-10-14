@@ -11,18 +11,11 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-       <v-list dense>
+      <v-list dense>
         <template v-for="item in groupItems">
-          <v-layout
-            v-if="item.heading"
-            :key="item.heading"
-            row
-            align-center
-          >
+          <v-layout v-if="item.heading" :key="item.heading" row align-center>
             <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-              </v-subheader>
+              <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
             </v-flex>
           </v-layout>
           <v-list-group
@@ -30,26 +23,19 @@
             v-model="item.model"
             :key="item.text"
             :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon=""
+            append-icon
           >
             <v-list-tile slot="activator">
               <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ item.text }}
-                </v-list-tile-title>
+                <v-list-tile-title>{{ item.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile
-              v-for="(child, i) in item.children"
-              :key="i"
-            >
+            <v-list-tile v-for="(child, i) in item.children" :key="i">
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ child.text }}
-                </v-list-tile-title>
+                <v-list-tile-title>{{ child.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
@@ -58,15 +44,12 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>
-                {{ item.text }}
-              </v-list-tile-title>
+              <v-list-tile-title>{{ item.text }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>
       </v-list>
     </v-navigation-drawer>
-
     <!-- 工具栏 -->
     <v-toolbar :clipped-left="clipped" fixed app>
       <v-toolbar-side-icon @click="drawer = !drawer"/>
@@ -83,7 +66,6 @@
         <v-icon>more_vert</v-icon>
       </v-btn>
     </v-toolbar>
-
     <v-content>
       <v-container>
         <nuxt/>
@@ -122,9 +104,13 @@ export default {
           icon: "people",
           title: '客户信息',
           to: '/customer'
-        },{
-          icon:'peoples',
-          title:'用户',
+        }, {
+          icon: 'people',
+          title: '仓库信息',
+          to: '/warehouse'
+        }, {
+          icon: 'peoples',
+          title: '用户',
           to: '/user/index'
         }
       ],
@@ -135,8 +121,8 @@ export default {
           text: '库存总账',
           model: true,
           children: [
-            { icon: 'library_books', text: '2016 年',to: '/account/total/2016' },
-            { icon: 'library_books', text: '2017 年',to: '/account/total/2017' }
+            { icon: 'library_books', text: '2016 年', to: '/account/total/2016' },
+            { icon: 'library_books', text: '2017 年', to: '/account/total/2017' }
           ]
         },
         {
@@ -160,8 +146,8 @@ export default {
       ]
     }
   },
-  metthods:{
-    action : function(params) {
+  metthods: {
+    action: function (params) {
       console.log(params);
     }
   }

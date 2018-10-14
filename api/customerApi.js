@@ -1,4 +1,3 @@
-'use strict'
 import fetch from './fetch.js'
 import pages from './pages'
 
@@ -8,6 +7,5 @@ const getCustomers = function(year, options) {
 }
 
 export default {
-	getCustomers,
-	pageOptions: pages.pageOptions
+	getCustomers
 }

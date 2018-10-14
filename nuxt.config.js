@@ -3,12 +3,17 @@ const pkg = require('./package')
 module.exports = {
 	mode: 'spa',
 
-	env: {
-		baseUrl: process.env.BASE_URL || 'http://localhost:51185'
-	},
+	dev: process.env.NODE_ENV !== 'production',
+
+	/*env: {
+		BASE_URL: dev? '':process.env.BASE_URL || 'http://localhost:51185'
+	},*/
 
 	router: {
 		middleware: 'authenticated'
+	},
+	generate: {
+		fallback: true
 	},
 	/*
     ** Headers of the page
@@ -65,7 +70,8 @@ module.exports = {
     */
 	axios: {
 		// See https://github.com/nuxt-community/axios-module#options
-		baseURL: 'http://localhost:51185'
+		baseURL: this.dev? '':process.env.BASE_URL || 'http://localhost:51185',
+		credentials: false
 	},
 
 	/*

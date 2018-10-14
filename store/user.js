@@ -62,8 +62,12 @@ export const getters = {
 	token(state) {
 		return state.token
 	},
+	//用户对象
 	user(state) {
-		return state.user
+		if(state.user){
+			return state.user
+		}
+		return {}
 	},
 
 	/**
@@ -87,5 +91,12 @@ export const getters = {
 		} else {
 			return ''
 		}
+	},
+	//用户所在部门代码
+	depCode(state){
+		if(state.user && state.user.depCode){
+			return state.user.depCode
+		}
+		return ''
 	}
 }

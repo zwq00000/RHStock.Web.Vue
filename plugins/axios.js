@@ -1,9 +1,10 @@
 export default function({ $axios, redirect,store}) {
 	$axios.onRequest(config => {
-		console.log('Making request to ' + config.url)
+		
 		// 下面会说在什么时候存储 token
 		if (store.getters.isAuthenticated) {
-			config.headers.Authorization = 'JWT ' + store.getters.token
+			let token = store.getters['user/token']
+			$axios.setToken(token, 'Bearer')
 		}
 		return config
 	})

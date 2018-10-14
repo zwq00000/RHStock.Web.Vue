@@ -9,17 +9,6 @@
             </v-list-tile>
         </v-list>
     </v-menu>
-    <!--
-        <v-avatar slot="activator" color="teal">
-            <span class="white- -text headline">{{firstChar}}</span>
-        </v-avatar>
-        <v-tooltip bottom>
-    <v-btn slot="activator" icon>
-        <v-icon>person</v-icon>
-    </v-btn>
-    <span>{{user}}</span>
-</v-tooltip>
-    -->
 </template>
 
 <script>
@@ -40,7 +29,7 @@ export default {
     }),
     methods:{
         onClick(val){
-            this.$store.dispatch('logout')
+            this.$store.dispatch('user/logout')
             this.$router.push('/user/login')
         }
     }

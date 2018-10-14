@@ -1,6 +1,6 @@
 <template>
 	<v-card>
-		<v-card-title primary-title>客户信息
+		<v-card-title primary-title>库存单据
 			<v-spacer></v-spacer>
 			<v-text-field
 				v-model="pagination.searchKey"
@@ -82,6 +82,7 @@ export default {
 				.then(res => {
 					let data = res.data
 					this.data = data.values
+					//this.sort.rowsPerPage = data.page.pageSize
 					pages.mergePageination(this.pagination,data.page)
 					this.loading = false
 				})
