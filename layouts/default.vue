@@ -11,44 +11,8 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-      <v-list dense>
-        <template v-for="item in groupItems">
-          <v-layout v-if="item.heading" :key="item.heading" row align-center>
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
-            </v-flex>
-          </v-layout>
-          <v-list-group
-            v-else-if="item.children"
-            v-model="item.model"
-            :key="item.text"
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon
-          >
-            <v-list-tile slot="activator">
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.text }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile v-for="(child, i) in item.children" :key="i">
-              <v-list-tile-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ child.text }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list-group>
-          <v-list-tile v-else :key="item.text">
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.text }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-      </v-list>
+      <nav-list />
+
     </v-navigation-drawer>
     <!-- 工具栏 -->
     <v-toolbar :clipped-left="clipped" fixed app>
@@ -72,17 +36,21 @@
       </v-container>
     </v-content>
     <v-footer :fixed="fixed" app>
-      <span>&copy; Lingya Tech 2017</span>
+      <my-footer />
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import myFooter from './my_footer'
+import navList from './nav_list'
 import userInfo from "~/components/UserInfo"
 
 export default {
   components: {
-    userInfo
+    userInfo,
+    myFooter,
+    navList
   },
   data() {
     return {
@@ -95,7 +63,6 @@ export default {
       title: '大港胶管 库存管理',
       items: [
         { icon: 'apps', title: 'Welcome', to: '/' },
-        { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' },
         {
           icon: 'library_books',
           title: '库存总账',
@@ -112,38 +79,10 @@ export default {
           icon: 'peoples',
           title: '用户',
           to: '/user/index'
-        }
+        },
+        { icon: 'help', title: '帮助', to: '/help'},
+        { icon: 'settings', title: '设置', to:'/settings' },
       ],
-      groupItems: [
-        {
-          icon: 'library_books',
-          'icon-alt': 'keyboard_arrow_down',
-          text: '库存总账',
-          model: true,
-          children: [
-            { icon: 'library_books', text: '2016 年', to: '/account/total/2016' },
-            { icon: 'library_books', text: '2017 年', to: '/account/total/2017' }
-          ]
-        },
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'More',
-          model: false,
-          children: [
-            { text: 'Import' },
-            { text: 'Export' },
-            { text: 'Print' },
-            { text: 'Undo changes' },
-            { text: 'Other contacts' }
-          ]
-        },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Send feedback' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Go to the old version' }
-      ]
     }
   },
   metthods: {

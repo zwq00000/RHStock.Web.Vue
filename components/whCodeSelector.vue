@@ -1,7 +1,5 @@
 <template>
 	<div>
-		<!--<v-combobox v-model="whCode" :items="whCodes" item-value="whCode" item-text="whName" :label="label" filterable @change="handleChange">
-			</v-combobox> -->
 		<v-autocomplete
 			v-model="whCode"
 			:items="whCodes"
@@ -13,12 +11,12 @@
 		>
 			<template slot="item" slot-scope="data">
 				<template>
-					<v-list-tile-content>
-						<v-list-tile-title>{{data.item.whName}}</v-list-tile-title>
-					</v-list-tile-content>
 					<v-list-tile-action>
 						<v-list-tile-action-text>{{data.item.whCode}}</v-list-tile-action-text>
 					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>{{data.item.whName}}</v-list-tile-title>
+					</v-list-tile-content>
 				</template>
 			</template>
 		</v-autocomplete>
