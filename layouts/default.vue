@@ -75,6 +75,10 @@ export default {
           icon: 'people',
           title: '仓库信息',
           to: '/warehouse'
+        },{
+          icon: 'library_books',
+          title: '单据列表',
+          to: '/vouch'
         }, {
           icon: 'peoples',
           title: '用户',
