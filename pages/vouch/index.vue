@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<v-card-title primary-title>库存单据
-			<v-spacer></v-spacer>
+			<v-spacer/>
 			<v-text-field
 				v-model="pagination.searchKey"
 				append-icon="search"
@@ -13,7 +13,7 @@
 		<v-data-table
 			:headers="headers"
 			:items="data"
-			item-key="cusCode"
+			item-key="id"
 			:pagination="pagination"
 			:loading="loading"
 			no-data-text="没有数据 :("
@@ -21,11 +21,16 @@
 		>
 			<v-progress-linear slot="progress" color="blue" indeterminate/>
 			<template slot="items" slot-scope="props">
-				<td>{{ props.item.cusCode }}</td>
-				<td>{{ props.item.cusName }}</td>
-				<td>{{ props.item.summary }}</td>
-				<td>{{ props.item.abbName }}</td>
-				<td>{{ props.item.address }}</td>
+				<td>{{ props.item.whCode}}</td>
+				<td><nuxt-link :to="'/vouch/'+props.item.id">{{ props.item.code}}</nuxt-link></td>
+				<td>{{ props.item.vouchType}}</td>
+				<td>{{ props.item.vouchDate|dateFormat}}</td>
+				<td>{{ props.item.maker}}</td>
+				<td>{{ props.item.depCode}}</td>
+				<td>{{ props.item.cusCode}}</td>
+				<td>{{ props.item.verifier}}</td>
+				<td>{{ props.item.vendorId}}</td>
+				<td>{{ props.item.memo}}</td>
 			</template>
 		</v-data-table>
 		<div class="text-xs-center pt-2">
@@ -40,8 +45,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 import pages from '@/api/pages'
-import api from '@/api/customerApi'
+import api from '@/api/rdrecordApi'
 
 export default {
 	data() {
@@ -49,21 +55,33 @@ export default {
 			pagination: {},
 			loading: false,
 			headers: [
-				{ value: 'cusCode', text: '客户代码' },
-				{ value: 'cusName', text: '客户名称' },
-				{ value: 'summary', text: '摘要' },
-				{ value: 'abbName', text: '简称' },
-				{ value: 'address', text: '地址' }
+				{ value: 'code', text: '单据编号' },
+				{ value: 'vouchType', text: '单据类型' },
+				{ value: 'vouchDate', text: '制单日期' },
+				{ value: 'maker', text: '制单' },
+				{ value: 'depCode', text: '部门' },
+				{ value: 'cusCode', text: '客户' },
+				{ value: 'verifier', text: '审核' },
+				{ value: 'whCode', text: '仓库' },
+				{ value: 'vendorId', text: '供应商' },
+				{ value: 'refCode', text: '参照单据' },
+				{ value: 'memo', text: '备注' },
 			],
 			data: []
+
 		}
 	},
 	computed: mapGetters({
-		accYear: 'accsuit/accYear'
+		accYear: 'accsuit/accYear',
+		whCode: 'warehouse/whCode',
 	}),
 	mounted() {
-		console.log('on customer.vue mounted')
 		this.fetchData()
+	},
+	watch: {
+		whCode: function () {
+			this.fetchData();
+		}
 	},
 	notifications: {
 		showWarnMsg: {
@@ -78,12 +96,11 @@ export default {
 		},
 		fetchData: function () {
 			this.loading = true
-			api.getCustomers(this.accYear, this.pagination)
+			api.getVouchs(this.accYear, this.whCode, this.pagination)
 				.then(res => {
 					let data = res.data
 					this.data = data.values
-					//this.sort.rowsPerPage = data.page.pageSize
-					pages.mergePageination(this.pagination,data.page)
+					pages.mergePageination(this.pagination, data.page)
 					this.loading = false
 				})
 				.catch(err => {

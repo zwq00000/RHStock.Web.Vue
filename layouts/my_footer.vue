@@ -1,7 +1,7 @@
-<template>
+﻿<template>
     <v-layout row wrap="">
         <div>账套年度:{{accYear}}</div>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <div>&copy; Lingya Tech {{ new Date().getFullYear() }}</div>
     </v-layout>
 </template>
