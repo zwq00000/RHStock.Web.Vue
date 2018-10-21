@@ -2,9 +2,6 @@
 	<v-card>
 		<v-card-title primary-title>库存单据
 			<v-spacer/>
-			<WhCodeSelector v-model="whCode" @change="fetchData"/>
-			<v-spacer/>
-			<v-spacer/>
 			<v-text-field
 				v-model="pagination.searchKey"
 				append-icon="search"
@@ -25,13 +22,13 @@
 			<v-progress-linear slot="progress" color="blue" indeterminate/>
 			<template slot="items" slot-scope="props">
 				<td>{{ props.item.whCode}}</td>
+				<td><nuxt-link :to="'/vouch/'+props.item.id">{{ props.item.code}}</nuxt-link></td>
 				<td>{{ props.item.vouchType}}</td>
-				<td>{{ props.item.vouchDate}}</td>
+				<td>{{ props.item.vouchDate|dateFormat}}</td>
 				<td>{{ props.item.maker}}</td>
 				<td>{{ props.item.depCode}}</td>
 				<td>{{ props.item.cusCode}}</td>
 				<td>{{ props.item.verifier}}</td>
-				<td>{{ props.item.vouchCode}}</td>
 				<td>{{ props.item.vendorId}}</td>
 				<td>{{ props.item.memo}}</td>
 			</template>
@@ -48,21 +45,17 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import WhCodeSelector from '~/components/whCodeSelector'
+import moment from 'moment'
 import pages from '@/api/pages'
 import api from '@/api/rdrecordApi'
 
 export default {
-	components: {
-		WhCodeSelector
-	},
 	data() {
 		return {
 			pagination: {},
 			loading: false,
-			whCode: 'ZCK',
 			headers: [
-				{ value: 'vouchCode', text: '单据编号' },
+				{ value: 'code', text: '单据编号' },
 				{ value: 'vouchType', text: '单据类型' },
 				{ value: 'vouchDate', text: '制单日期' },
 				{ value: 'maker', text: '制单' },
@@ -79,10 +72,16 @@ export default {
 		}
 	},
 	computed: mapGetters({
-		accYear: 'accsuit/accYear'
+		accYear: 'accsuit/accYear',
+		whCode: 'warehouse/whCode',
 	}),
 	mounted() {
 		this.fetchData()
+	},
+	watch: {
+		whCode: function () {
+			this.fetchData();
+		}
 	},
 	notifications: {
 		showWarnMsg: {

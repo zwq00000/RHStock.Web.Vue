@@ -2,8 +2,6 @@
 <template>
 	<v-card>
 		<v-card-title primary-title>客户信息
-			<v-spacer></v-spacer>
-			<WhCodeSelector v-model="whCode" :year="year" @change="fetchData"/>
 			<v-spacer/>
 			<v-text-field
 				v-model="pagination.searchKey"
@@ -44,20 +42,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import WhCodeSelector from '~/components/whCodeSelector'
 import api from '~/api/TotalAccountApi'
 
 export default {
-	components: {
-		WhCodeSelector
-	},
 	props: {
 		// 账套年度
 		year: { type: Number, require: true, default: 2016 }
 	},
 	data() {
 		return {
-			whCode: 'ZCK',
 			pagination: {},//api.pageOptions, //{ page: 1, pageSize: 20 },
 			loading: true,
 			header: [
@@ -78,7 +71,8 @@ export default {
 			return api.getExportCsvLink(this.whCode, this.year)
 		},
 		...mapGetters({
-			accYear: 'accsuit/accYear'
+			accYear: 'accsuit/accYear',
+			whCode: 'warehouse/whCode',
 		})
 	},
 	watch: {

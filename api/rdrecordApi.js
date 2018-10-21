@@ -31,8 +31,8 @@ const getVouchs = function(year,whCode,options){
  * @param {int} year            账套年度
  * @param {string} vouchCode    单据编号
  */
-const getVouch = function(year,vouchCode){
-    return $nuxt.$axios.get(`/api/RdRecord/${year}/${vouchCode}`)
+const getVouch = function(whCode, year,vouchId){
+    return $nuxt.$axios.get(`/api/RdRecord/${whCode}/${year}/${vouchId}`)
 }
 
 export default {
