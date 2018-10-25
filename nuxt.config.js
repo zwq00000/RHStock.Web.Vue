@@ -3,10 +3,8 @@ const pkg = require('./package')
 module.exports = {
 	mode: 'spa',
 
-	dev: process.env.NODE_ENV !== 'production',
-
 	env: {
-		baseUrl: dev? process.env.BASE_URL: 'http://localhost:51185'
+		baseUrl: process.env.NODE_ENV === 'production'? process.env.BASE_URL: 'http://localhost:51185'
 	  },
 
 	router: {
