@@ -3,9 +3,11 @@ const pkg = require('./package')
 module.exports = {
 	mode: 'spa',
 
-	env: {
-		baseUrl: process.env.NODE_ENV === 'production'? process.env.BASE_URL: 'http://localhost:51185'
-	  },
+	dev: process.env.NODE_ENV !== 'production',
+
+	/*env: {
+		BASE_URL: dev? '':process.env.BASE_URL || 'http://localhost:51185'
+	},*/
 
 	router: {
 		middleware: 'authenticated'
@@ -75,7 +77,7 @@ module.exports = {
     */
 	axios: {
 		// See https://github.com/nuxt-community/axios-module#options
-		baseURL: process.env.baseUrl,
+		baseURL:  'http://localhost:51185',
 		credentials: false
 	},
 
