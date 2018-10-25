@@ -2,7 +2,6 @@
 	<v-autocomplete
 		v-model="whCode"
 		:items="whCodes"
-		box
 		:label="label"
 		item-text="whName"
 		item-value="whCode"
@@ -35,7 +34,6 @@ export default {
 	},
 	data() {
 		return {
-			loading: true,
 			whCode: this.value,
 			whCodes: []
 		}
@@ -54,15 +52,12 @@ export default {
 			}
 		},
 		fetchData() {
-			this.loading = true
 			api.GetWhCodes(this.accYear, this.depCode)
 				.then(res => {
 					let data = res.data
 					this.whCodes = data
-					this.loading = false
 				})
 				.catch(err => {
-					this.loading = false
 					this.commit('error', `数据加载失败,${err.message}`)
 				})
 		},
