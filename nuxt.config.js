@@ -5,9 +5,9 @@ module.exports = {
 
 	dev: process.env.NODE_ENV !== 'production',
 
-	/*env: {
-		BASE_URL: dev? '':process.env.BASE_URL || 'http://localhost:51185'
-	},*/
+	env: {
+		baseUrl: dev? process.env.BASE_URL: 'http://localhost:51185'
+	  },
 
 	router: {
 		middleware: 'authenticated'
@@ -77,9 +77,7 @@ module.exports = {
     */
 	axios: {
 		// See https://github.com/nuxt-community/axios-module#options
-		baseURL: this.dev
-			? ''
-			: process.env.BASE_URL || 'http://localhost:51185',
+		baseURL: process.env.baseUrl,
 		credentials: false
 	},
 
