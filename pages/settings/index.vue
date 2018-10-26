@@ -1,33 +1,37 @@
 <template>
     <div>
         <year-select/>
-        <v-data-table
-            :headers="headers"
-            :items="data"
-            item-key="whCode"
-            :pagination="pagination"
-            :loading="loading"
-            no-data-text="没有数据 :("
-            hide-actions
-        >
-            <v-progress-linear slot="progress" color="blue" indeterminate/>
-            <template slot="items" slot-scope="props">
-                <td>{{ props.item.depName }}</td>
-                <td>{{ props.item.whCode }}</td>
-                <td>{{ props.item.whName }}</td>
-                <td class="justify-center layout px-0">
-                    <v-icon small class="mr-2" @click="genTotalAccount(props.item.whCode)">done</v-icon>
-                </td>
-            </template>
-        </v-data-table>
-        <div class="text-xs-center pt-2">
-            <v-pagination
-                v-model="pagination.page"
-                :length="pagination.pages"
-                :total-visible="7"
-                @input="handlePageChange"
-            ></v-pagination>
-        </div>
+        <v-tabs dark slider-color="yellow">
+            <v-tab href="#tab-1">全年库存总账</v-tab>
+            <v-tab-item value="tab-1" key="1">
+                <v-card flat>
+                    <v-data-table
+                        :headers="headers"
+                        :items="data"
+                        item-key="whCode"
+                        :pagination.sync="pagination"
+                        no-data-text="没有数据 :("
+                    >
+                        <v-progress-linear slot="progress" color="blue" indeterminate/>
+                        <template slot="items" slot-scope="props">
+                            <td>{{ props.item.depName }}</td>
+                            <td>{{ props.item.whCode }}</td>
+                            <td>{{ props.item.whName }}</td>
+                            <td class="justify-center layout px-0">
+                                <v-tooltip bottom>
+                                    <v-icon slot="activator"
+                                        small
+                                        class="mr-2"
+                                        @click="genTotalAccount(props.item.whCode)"
+                                    >done</v-icon>
+                                    <span>生成全年账簿</span>
+                                </v-tooltip>
+                            </td>
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </v-tab-item>
+        </v-tabs>
     </div>
 </template>
 
@@ -78,9 +82,7 @@ export default {
                 this.loading = false
             }).catch(err => {
                 this.loading = false
-                this.showWarnMsg({
-                    message: `数据加载失败,${err.message}`
-                })
+
             })
         },
         handlePageChange(val) {
@@ -98,9 +100,7 @@ export default {
                 })
                 .catch(err => {
                     this.loading = false
-                    this.showWarnMsg({
-                        message: `数据加载失败,${err.message}`
-                    })
+
                 })
         }
     }

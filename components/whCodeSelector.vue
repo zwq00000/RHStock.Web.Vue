@@ -25,22 +25,18 @@ import { mapGetters } from 'vuex'
 import api from '@/api/WarehouseApi'
 export default {
 	props: {
-		value: {
-			type: String,
-			required: true,
-			default: ''
-		},
 		label: { type: String, default: '选择仓库' }
 	},
 	data() {
 		return {
-			whCode: this.value,
+			whCode: this.currentWhCode,
 			whCodes: []
 		}
 	},
 	computed: mapGetters({
 		accYear: 'accsuit/accYear',
-		depCode: 'user/depCode'
+		depCode: 'user/depCode',
+		currentWhCode:'warehouse/whCode'
 	}),
 	created: function () {
 		this.fetchData()
@@ -61,8 +57,8 @@ export default {
 					this.commit('error', `数据加载失败,${err.message}`)
 				})
 		},
-		handleChange(value) {
-			this.$store.commit('warehouse/setWhCode',value)
+		handleChange(val) {
+			this.$store.commit('warehouse/setWhCode',val)
 		}
 	}
 }
