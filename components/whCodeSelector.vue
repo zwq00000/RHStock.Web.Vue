@@ -2,7 +2,6 @@
 	<v-autocomplete
 		v-model="whCode"
 		:items="whCodes"
-		box
 		:label="label"
 		item-text="whName"
 		item-value="whCode"
@@ -26,23 +25,18 @@ import { mapGetters } from 'vuex'
 import api from '@/api/WarehouseApi'
 export default {
 	props: {
-		value: {
-			type: String,
-			required: true,
-			default: ''
-		},
 		label: { type: String, default: '选择仓库' }
 	},
 	data() {
 		return {
-			loading: true,
-			whCode: this.value,
+			whCode: this.currentWhCode,
 			whCodes: []
 		}
 	},
 	computed: mapGetters({
 		accYear: 'accsuit/accYear',
-		depCode: 'user/depCode'
+		depCode: 'user/depCode',
+		currentWhCode:'warehouse/whCode'
 	}),
 	created: function () {
 		this.fetchData()
@@ -54,20 +48,17 @@ export default {
 			}
 		},
 		fetchData() {
-			this.loading = true
 			api.GetWhCodes(this.accYear, this.depCode)
 				.then(res => {
 					let data = res.data
 					this.whCodes = data
-					this.loading = false
 				})
 				.catch(err => {
-					this.loading = false
 					this.commit('error', `数据加载失败,${err.message}`)
 				})
 		},
-		handleChange(value) {
-			this.$store.commit('warehouse/setWhCode',value)
+		handleChange(val) {
+			this.$store.commit('warehouse/setWhCode',val)
 		}
 	}
 }

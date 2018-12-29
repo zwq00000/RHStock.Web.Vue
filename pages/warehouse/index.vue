@@ -16,7 +16,7 @@
 			item-key="whCode"
 			:pagination="pagination"
 			:loading="loading"
-			no-data-text = "没有数据 :("
+			no-data-text="没有数据 :("
 			hide-actions
 		>
 			<v-progress-linear slot="progress" color="blue" indeterminate/>
@@ -45,18 +45,18 @@ export default {
 	data() {
 		return {
 			pagination: {},
-            loading: false,
+			loading: false,
 			headers: [
 				{ value: 'depName', text: '部门' },
 				{ value: 'whCode', text: '仓库代码' },
 				{ value: 'whName', text: '仓库名称' }
 			],
 			data: [{
-      "whCode": "string",
-      "whName": "string",
-      "depCode": "string",
-      "depName": "string"
-    }]
+				"whCode": "string",
+				"whName": "string",
+				"depCode": "string",
+				"depName": "string"
+			}]
 		}
 	},
 	computed: mapGetters({
@@ -82,7 +82,7 @@ export default {
 				.then(res => {
 					let data = res.data
 					this.data = data.values
-					pages.mergePageination(this.pagination,data.page)
+					pages.mergePageination(this.pagination, data.page)
 					this.loading = false
 				})
 				.catch(err => {

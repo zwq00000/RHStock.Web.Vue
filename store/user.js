@@ -40,21 +40,24 @@ export const actions = {
 				commit('setUser', res.data.user)
 				commit('setToken', res.data.token)
 				commit('setLoading', false, { root: true })
+				this.$axios.setToken(res.data.token)
 			})
 			.catch(err => {
 				console.log(err)
 				commit('setError', err, { root: true })
 				commit('setLoading', false, { root: true })
+				this.$axios.setToken('')
 			})
 	},
 	//注销用户
-	logout({ commit }) {
+	logout({ commit}) {
 		login.logout().catch(err => {
 			console.log(err)
 			commit('setError', err)
 		})
 		commit('setUser', null)
 		commit('setToken', null)
+		this.$axios.setToken('')
 	}
 }
 

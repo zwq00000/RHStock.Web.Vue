@@ -5,7 +5,7 @@
   "author": "zwq00000",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt ",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

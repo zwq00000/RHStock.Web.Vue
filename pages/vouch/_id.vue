@@ -1,40 +1,40 @@
 ﻿<template>
-    <v-form v-model="vouch">
+    <v-form>
         <v-layout row justify-space-between>
             <nuxt-link :to="'/vouch/'+previous"><v-btn flat small>上一张</v-btn></nuxt-link>
+            <h2>{{vouch.vouchType}}</h2>
             <nuxt-link :to="'/vouch/'+next"><v-btn flat small>下一张</v-btn></nuxt-link>
         </v-layout>
         <v-layout row justify-space-between>
-            <v-text-field v-model="vouch.whCode" label="仓库" readonly="true"/>
+            <v-text-field v-model="vouch.whCode" label="仓库" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.vouchCode" label="单号" readonly="true"/>
+            <v-text-field v-model="vouch.vouchCode" label="单号" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.vouchDate" label="日期" readonly="true"/>
+            <v-text-field v-model="vouch.vouchDate" label="日期" readonly/>
             <v-spacer />
-            <v-text-field v-model="vouch.quantitySummary" label="数量合计" readonly="true"/>
+            <v-text-field v-model="vouch.quantity" label="数量合计" readonly/>
         </v-layout>
         <v-layout row justify-space-between>
-            <v-text-field v-model="vouch.depCode" label="部门" readonly="true"/>
+            <v-text-field v-model="vouch.depName" label="部门" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.cusCode" label="客户" readonly="true"/>
+            <v-text-field v-model="vouch.cusName" label="客户" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.vendorId" label="供应商" readonly="true"/>
+            <v-text-field v-model="vouch.vendor" label="供应商" readonly/>
         </v-layout>
         <v-layout row justify-space-between>
-            <v-text-field v-model="vouch.maker" label="制单" readonly="true"/>
+            <v-text-field v-model="vouch.maker" label="制单" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.handler" label="经手人" readonly="true"/>
+            <v-text-field v-model="vouch.handler" label="经手人" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.verifier" label="审核" readonly="true"/>
+            <v-text-field v-model="vouch.verifier" label="审核" readonly/>
             <v-spacer/>
-            <v-text-field v-model="vouch.attachment" label="附件" readonly="true"/>
+            <v-text-field v-model="vouch.attachment" label="附件" readonly/>
         </v-layout>
        
         <v-data-table
             :headers="headers"
-            :items="vouch.rdRecords"
+            :items="vouch.details"
             item-key="autoId"
-            :loading="loading"
             no-data-text="没有数据 :("
             hide-actions
         >

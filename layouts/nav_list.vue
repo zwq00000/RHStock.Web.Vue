@@ -21,7 +21,7 @@ export default {
         {
           icon: 'library_books',
           title: '库存总账',
-          to: '/account/total'
+          to: '/account/total/Index'
         }, {
           icon: "people",
           title: '客户信息',
